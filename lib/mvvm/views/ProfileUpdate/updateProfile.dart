@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:placed/constants/constants.dart';
+import 'package:placed/mvvm/Components/imageInput.dart';
+import 'package:placed/mvvm/Components/textAreaInput.dart';
+import 'package:placed/mvvm/Components/textInput.dart';
+import 'package:placed/mvvm/Models/student.model.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   const UpdateProfilePage({Key? key}) : super(key: key);
@@ -9,6 +14,14 @@ class UpdateProfilePage extends StatefulWidget {
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   // Editable form fields
+  Student? profileData;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    profileData = student;
+  }
+
   TextEditingController _nameController = TextEditingController();
   TextEditingController _branchController = TextEditingController();
   TextEditingController _passingYearController = TextEditingController();
@@ -72,29 +85,52 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Name:'),
-              TextField(
+              CustomCircularTextField(
                 controller: _nameController,
-                decoration: InputDecoration(
-                  hintText: 'Enter your name',
-                ),
+                hintText: 'Name',
               ),
               SizedBox(height: 20),
-              Text('Branch:'),
-              TextField(
+              CustomCircularTextField(
                 controller: _branchController,
-                decoration: InputDecoration(
-                  hintText: 'Enter your branch',
-                ),
+                hintText: 'Branch',
               ),
               SizedBox(height: 20),
-              Text('Passing Year:'),
-              TextField(
+              CustomCircularTextField(
                 controller: _passingYearController,
-                decoration: InputDecoration(
-                  hintText: 'Enter your passing year',
-                ),
+                hintText: 'Passing Year',
               ),
+              SizedBox(height: 20),
+              CustomCircularTextField(
+                controller: _rollNumberController,
+                hintText: 'Roll Number',
+              ),
+              SizedBox(height: 20),
+              CustomCircularTextField(
+                controller: _sectionController,
+                hintText: 'Section',
+              ),
+              SizedBox(height: 20),
+              CustomCircularTextField(
+                controller: _subsectionController,
+                hintText: 'Sub section',
+              ),
+              SizedBox(height: 20),
+              CustomCircularTextField(
+                controller: _emailController,
+                hintText: 'Email',
+              ),
+              SizedBox(height: 20),
+              CustomCircularTextField(
+                controller: _mobileNumberController,
+                hintText: 'Mobile Number',
+              ),
+              SizedBox(height: 20),
+              CustomTextArea(
+                controller: _addressController,
+                hintText: 'Address',
+              ),
+              SizedBox(height: 20),
+              CustomImageInput(),
               // Add similar code for other editable fields
 
               // Non-editable fields
@@ -118,8 +154,45 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: UpdateProfilePage(),
-  ));
-}
+// class CustomCircularTextField extends StatelessWidget {
+//   final TextEditingController controller;
+//   final String hintText;
+
+//   const CustomCircularTextField({
+//     Key? key,
+//     required this.controller,
+//     required this.hintText,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: EdgeInsets.all(8.0),
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(20.0),
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.5),
+//             spreadRadius: 2,
+//             blurRadius: 4,
+//             offset: Offset(0, 2),
+//           ),
+//         ],
+//       ),
+//       child: TextField(
+//         controller: controller,
+//         decoration: InputDecoration(
+//           hintText: hintText,
+//           border: InputBorder.none,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// void main() {
+//   runApp(MaterialApp(
+//     home: UpdateProfilePage(),
+//   ));
+// }

@@ -7,9 +7,7 @@ import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseConfigure().data
-  );
+  await Firebase.initializeApp(options: FirebaseConfigure().data);
   runApp(const MyApp());
 }
 
@@ -25,14 +23,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Scaffold(
-        appBar: AppBar(title: Text('Bookish')),
-        body: Center(
-          child: Column(
-            children: [Text("helllo govind ji"), Text("hello Anshu bro")],
-          ),
-        ),
-      ),
+      home: UpdateProfilePage()
+      // Scaffold(
+      //   appBar: AppBar(title: Text('Bookish')),
+      //   body: Center(
+      //     child: SingleChildScrollView(
+      //       // controller: controller,
+      //       child: Column(
+      //         children: [
+      //           UpdateProfilePage(),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
