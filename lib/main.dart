@@ -8,9 +8,7 @@ import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseConfigure().data
-  );
+  await Firebase.initializeApp(options: FirebaseConfigure().data);
   runApp(const MyApp());
 }
 
