@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4053823757",
+    "project_id": "plazed",
+    "storage_bucket": "plazed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4053823757:android:3280b017c631f2987ac044",
+        "android_client_info": {
+          "package_name": "com.placed.placed"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcgXU_3c4q1kXUfQ9NO36ycpF4RgqxtJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
