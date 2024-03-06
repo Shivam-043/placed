@@ -19,14 +19,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(AppConstant().isLogin);
+    print(AppConstant.isLogin);
   }
   @override
   Widget build(BuildContext context) {
-    if(AppConstant().isLogin){
+    if(AppConstant.isLogin){
       Navigator.pushNamedAndRemoveUntil(context, Home.routeName , (route) => false);
     }
-    print(AppConstant().isLogin);
+    print(AppConstant.isLogin);
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(

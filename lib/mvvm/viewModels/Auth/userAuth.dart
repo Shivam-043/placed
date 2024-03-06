@@ -66,8 +66,8 @@ class UserAuth extends ChangeNotifier {
             mobileNumber: value.user!.phoneNumber ?? '',
             photo: value.user!.photoURL ?? '',
           );
-          AppConstant().student = student;
-          AppConstant().isLogin = true;
+          AppConstant.student = student;
+          AppConstant.isLogin = true;
           await saveToSharedPreferences(student).then((value) =>
               Navigator.pushNamedAndRemoveUntil(
                   context, Home.routeName, (route) => false));
@@ -91,13 +91,13 @@ class UserAuth extends ChangeNotifier {
 
   Future<void> readFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    AppConstant().isLogin = prefs.getBool(AppStrings.prefLogin) ?? false;
+    AppConstant.isLogin = prefs.getBool(AppStrings.prefLogin) ?? false;
     if (prefs.getBool(AppStrings.prefLogin) == true) {
       String? user = prefs.getString(AppStrings.prefUser);
       if (user != null) {
-        AppConstant().student = Student.fromJson(jsonDecode(user));
+        AppConstant.student = Student.fromJson(jsonDecode(user));
       } else {
-        AppConstant().student = Student();
+        AppConstant.student = Student();
       }
     }
   }

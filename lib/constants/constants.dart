@@ -1,6 +1,6 @@
 import 'package:placed/mvvm/Models/student.model.dart';
 
 class AppConstant {
-  late Student student ;
-  bool isLogin = false;
+  static bool isLogin = false;
+  static late Student student ;
 }
