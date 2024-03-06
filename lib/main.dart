@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:placed/mvvm/views/Auth/Login/LoginScreen.dart';
 import 'package:placed/utils/firebase/firebase_configure.dart';
+import 'package:placed/utils/routes/routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
@@ -22,14 +24,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Scaffold(
-          appBar: AppBar(title: Text('Bookish')),
-          body: Center(
-            child: Column(
-              children: [Text("helllo govind ji"), Text("hello Anshu bro")],
-            ),
-          ),
-        ),
+        initialRoute: LoginScreen.routeName,
+        onGenerateRoute: RouteGenerator.generateRoute,
       );
     });
   }

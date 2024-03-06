@@ -20,7 +20,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    profileData = student;
+    profileData = AppConstant().student;
     didChangeDependencies();
   }
 
