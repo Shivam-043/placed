@@ -7,7 +7,7 @@ class Student {
   String subsection;
   String resume;
   double currentCgpa;
-  String skills;
+  List<dynamic> skills;
   String email;
   String mobileNumber;
   String address;
@@ -15,6 +15,7 @@ class Student {
   String userId;
   String onCampusStatus;
   String offCampusStatus;
+  String dob;
 
   Student({
     this.name = '',
@@ -25,7 +26,7 @@ class Student {
     this.subsection = '',
     this.resume = '',
     this.currentCgpa = 0.0,
-    this.skills = '',
+    this.skills = const [],
     this.email = '',
     this.mobileNumber = '',
     this.address = '',
@@ -33,6 +34,7 @@ class Student {
     this.userId = '',
     this.onCampusStatus = '',
     this.offCampusStatus = '',
+    this.dob = '',
   });
 
   // Named constructor to create Student object from JSON
@@ -46,7 +48,7 @@ class Student {
       subsection: json['subsection'] ?? '',
       resume: json['resume'] ?? '',
       currentCgpa: json['currentCgpa'] ?? 0.0,
-      skills: json['skills'] ?? '',
+      skills: json['skills'] ?? [],
       email: json['email'] ?? '',
       mobileNumber: json['mobileNumber'] ?? '',
       address: json['address'] ?? '',
@@ -54,6 +56,7 @@ class Student {
       userId: json['userId'] ?? '',
       onCampusStatus: json['onCampusStatus'] ?? '',
       offCampusStatus: json['offCampusStatus'] ?? '',
+      dob: json['dob'] ?? '',
     );
   }
 
@@ -75,6 +78,50 @@ class Student {
       'userId': userId,
       'onCampusStatus': onCampusStatus,
       'offCampusStatus': offCampusStatus,
+      'dob': dob,
     };
   }
+
+  //fromMap
+  Student.fromMap(Map<String, dynamic> map)
+      : name = map['name'],
+        branch = map['branch'],
+        passingYear = map['passingYear'],
+        rollNumber = map['rollNumber'],
+        section = map['section'],
+        subsection = map['subsection'],
+        resume = map['resume'],
+        currentCgpa = map['currentCgpa'],
+        skills = map['skills'],
+        email = map['email'],
+        mobileNumber = map['mobileNumber'],
+        address = map['address'],
+        photo = map['photo'],
+        userId = map['userId'],
+        onCampusStatus = map['onCampusStatus'],
+        dob = map['dob'],
+        offCampusStatus = map['offCampusStatus'];
+
+  //toMap
+  Map<String, dynamic> toMap() => {
+        'name': name,
+        'branch': branch,
+        'passingYear': passingYear,
+        'rollNumber': rollNumber,
+        'section': section,
+        'subsection': subsection,
+        'resume': resume,
+        'currentCgpa': currentCgpa,
+        'skills': skills,
+        'email': email,
+        'mobileNumber': mobileNumber,
+        'address': address,
+        'photo': photo,
+        'userId': userId,
+        'onCampusStatus': onCampusStatus,
+        'offCampusStatus': offCampusStatus,
+        'dob': dob,
+      };
+
+
 }
