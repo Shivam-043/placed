@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:placed/constants/constants.dart';
 import 'package:placed/constants/images.dart';
 import 'package:placed/mvvm/viewModels/Auth/userAuth.dart';
+import 'package:placed/mvvm/views/HomeView/home.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
@@ -12,8 +14,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(AppConstant().isLogin);
+  }
   @override
   Widget build(BuildContext context) {
+    if(AppConstant().isLogin){
+      Navigator.pushNamedAndRemoveUntil(context, Home.routeName , (route) => false);
+    }
+    print(AppConstant().isLogin);
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
@@ -40,11 +53,27 @@ class _LoginScreenState extends State<LoginScreen> {
             UserAuth().googleSignInMethod(context);
           },
           child: Container(
-            width: 50,
-            height: 50,
-            child: Image.asset(
-            AppImage.google,
-          ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(color: Colors.black54),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            width: 60,
+            height: 60,
+            child: ClipOval(
+              child: Image.asset(
+              AppImage.google,
+                fit: BoxFit.contain,
+                        ),
+            ),
           ),
         ),
       ]),
