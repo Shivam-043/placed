@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:placed/mvvm/views/CalendarView/event.dart';
 import 'package:placed/mvvm/views/HomeView/home.dart';
 import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
 
@@ -17,6 +18,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => UpdateProfilePage());
       case LoginScreen.routeName:
         return MaterialPageRoute(builder: (_) => LoginScreen());
+      case '/event':
+        return MaterialPageRoute(builder: (_) => MyEvent());
       default:
         return _errorRoute();
     }

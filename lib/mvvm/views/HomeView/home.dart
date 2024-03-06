@@ -29,9 +29,8 @@ class _HomeState extends State<Home> {
             ElevatedButton(
                 onPressed: () {
                   print("hello");
-                  getData();
-                  //       Navigator.pushNamed(
-                  // context,'/updateProfile');
+                  // getData();
+                  Navigator.pushNamed(context, '/event');
                 },
                 child: Text("update profile"))
           ],
