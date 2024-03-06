@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:placed/constants/constants.dart';
+import 'package:placed/mvvm/Components/customProfileField.dart';
 import 'package:placed/mvvm/Components/imageInput.dart';
 import 'package:placed/mvvm/Components/textAreaInput.dart';
 import 'package:placed/mvvm/Components/textInput.dart';
@@ -20,6 +21,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     // TODO: implement initState
     super.initState();
     profileData = student;
+    didChangeDependencies();
   }
 
   TextEditingController _nameController = TextEditingController();
@@ -39,6 +41,20 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   String _userId = "12345"; // Replace with user-specific data
   String _onCampusStatus = "Unplaced"; // Replace with user-specific data
   String _offCampusStatus = "Unplaced"; // Replace with user-specific data
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Set the controller values based on the profileData
+    _nameController.text = profileData?.name ?? '';
+    _branchController.text = profileData?.branch ?? '';
+    _passingYearController.text = profileData?.passingYear.toString() ?? '';
+    _rollNumberController.text = profileData?.rollNumber ?? '';
+    _sectionController.text = profileData?.section ?? '';
+    _subsectionController.text = profileData?.subsection ?? '';
+    _emailController.text = profileData?.email ?? '';
+    _mobileNumberController.text = profileData?.mobileNumber ?? '';
+    _addressController.text = profileData?.address ?? '';
+  }
 
   // Function to handle updating profile
   void _updateProfile() {
@@ -73,7 +89,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     // You can add further logic to save the data to your backend or update state.
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -85,42 +101,58 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.person,
+                title: 'Name',
                 controller: _nameController,
                 hintText: 'Name',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.business,
+                title: 'Branch',
                 controller: _branchController,
                 hintText: 'Branch',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.calendar_today,
+                title: 'Passing Year',
                 controller: _passingYearController,
                 hintText: 'Passing Year',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.confirmation_number,
+                title: 'Roll Number',
                 controller: _rollNumberController,
                 hintText: 'Roll Number',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.view_list,
+                title: 'Section',
                 controller: _sectionController,
                 hintText: 'Section',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.view_module,
+                title: 'Subsection',
                 controller: _subsectionController,
-                hintText: 'Sub section',
+                hintText: 'Subsection',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.email,
+                title: 'Email',
                 controller: _emailController,
                 hintText: 'Email',
               ),
               SizedBox(height: 20),
-              CustomCircularTextField(
+              ProfileField(
+                icon: Icons.phone,
+                title: 'Mobile Number',
                 controller: _mobileNumberController,
                 hintText: 'Mobile Number',
               ),
@@ -131,16 +163,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               ),
               SizedBox(height: 20),
               CustomImageInput(),
-              // Add similar code for other editable fields
-
-              // Non-editable fields
               SizedBox(height: 20),
               Text('User ID: $_userId'),
               SizedBox(height: 20),
               Text('On Campus Status: $_onCampusStatus'),
               SizedBox(height: 20),
               Text('Off Campus Status: $_offCampusStatus'),
-
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateProfile,
@@ -153,46 +181,3 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     );
   }
 }
-
-// class CustomCircularTextField extends StatelessWidget {
-//   final TextEditingController controller;
-//   final String hintText;
-
-//   const CustomCircularTextField({
-//     Key? key,
-//     required this.controller,
-//     required this.hintText,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(8.0),
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(20.0),
-//         color: Colors.white,
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.black.withOpacity(0.5),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: TextField(
-//         controller: controller,
-//         decoration: InputDecoration(
-//           hintText: hintText,
-//           border: InputBorder.none,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// void main() {
-//   runApp(MaterialApp(
-//     home: UpdateProfilePage(),
-//   ));
-// }

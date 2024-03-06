@@ -37,20 +37,3 @@ class CustomTextArea extends StatelessWidget {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Custom Text Area Example'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CustomTextArea(
-          controller: TextEditingController(),
-          hintText: 'Enter your address...',
-        ),
-      ),
-    ),
-  ));
-}

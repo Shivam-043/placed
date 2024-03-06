@@ -1,47 +1,72 @@
 import 'package:flutter/material.dart';
 
-class CustomCircularTextField extends StatelessWidget {
+class CustomCircularTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final EdgeInsets padding;
-  final double borderRadius;
-  final Color borderColor;
-  final Color shadowColor;
 
   const CustomCircularTextField({
     Key? key,
     required this.controller,
     required this.hintText,
-    this.padding = const EdgeInsets.all(8.0),
-    this.borderRadius = 20.0,
-    this.borderColor = Colors.grey,
-    this.shadowColor = Colors.black,
   }) : super(key: key);
 
   @override
+  _CustomCircularTextFieldState createState() =>
+      _CustomCircularTextFieldState();
+}
+
+class _CustomCircularTextFieldState extends State<CustomCircularTextField> {
+  bool isEditing = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        color: Colors.white, // Background color of the text field
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: Offset(0, 2), // Changes the shadow direction
-          ),
-        ],
-      ),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: hintText,
-          border: InputBorder.none,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isEditing = true;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
+        child: isEditing
+            ? TextField(
+                controller: widget.controller,
+                decoration: InputDecoration(
+                  hintText: widget.hintText,
+                  border: InputBorder.none,
+                ),
+              )
+            : Row(
+              children :[
+                Text(widget.hintText +  ":"),
+                Text(
+                widget.controller.text.isNotEmpty
+                    ? widget.controller.text
+                    : widget.hintText,
+                style: TextStyle(
+                  color: Colors.black, // Label text color
+                  fontSize: 16.0, // Label text font size
+                ),
+              ),])
       ),
     );
   }
 }
 
+// Example usage:
+// CustomCircularTextField(
+//   controller: _nameController,
+//   hintText: 'Name',
+// ),
