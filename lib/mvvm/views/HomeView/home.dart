@@ -12,8 +12,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   getData() async {
-    print("startign post ");
-    await postData("http://localhost:3000/api/students/getstudent",
+    print("starting post ");
+    await postData("http://192.168.1.20:3000/api/students/getstudent",
         {"email": "jigovind556"});
   }
 
