@@ -1,6 +1,7 @@
-import Student, { create } from "../models/placements/student.models";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import Student from "../models/placements/student.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const registerStudent= asyncHandler(async (req,res)=>{
     const { name, email, mobile,photo } = req.body;
@@ -11,7 +12,7 @@ const registerStudent= asyncHandler(async (req,res)=>{
         throw new ApiError(400, "All fields are required");
     }
 
-    const existedUser = await User.findOne({ email });
+    const existedUser = await Student.findOne({ email });
 
     if (existedUser) {
         throw new ApiError(409, "Email already in use");

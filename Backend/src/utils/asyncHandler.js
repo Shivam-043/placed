@@ -1,4 +1,4 @@
-const { ApiError } = require("./ApiError");
+import {ApiError} from './ApiError.js';
 
 const asyncHandler = (requestHandler) => {
     return (req, res, next) => {
@@ -8,7 +8,7 @@ const asyncHandler = (requestHandler) => {
                 if (error instanceof ApiError) {
                     // If it's an ApiError, send a custom error response
                     if (!res.headersSent) {
-                        res.status(error.statusCode).json({ message: error.message ,...error });
+                        res.status(error.statusCode).json({ message: error.message, ...error });
                     }
                 } else {
                     // For other errors, send a generic Internal Server Error response
@@ -23,4 +23,4 @@ const asyncHandler = (requestHandler) => {
     }
 }
 
-module.exports = { asyncHandler }
+export { asyncHandler }
