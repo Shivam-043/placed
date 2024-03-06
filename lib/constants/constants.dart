@@ -1,5 +1,5 @@
 import 'package:placed/mvvm/Models/student.model.dart';
 
 class AppConstant {
-  late Student student ;
+  static late Student student ;
 }

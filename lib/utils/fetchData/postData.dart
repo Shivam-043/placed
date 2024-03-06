@@ -9,7 +9,9 @@ Future<void> postData(String apiUrl, Map<String, dynamic> data) async {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(data),
-    );
+    ).catchError((e)=>{
+      print(e)
+    });
 
     if (response.statusCode == 201) {
       print('Data posted successfully');

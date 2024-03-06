@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:placed/constants/constants.dart';
 import 'package:placed/mvvm/Components/customProfileField.dart';
@@ -5,6 +7,7 @@ import 'package:placed/mvvm/Components/imageInput.dart';
 import 'package:placed/mvvm/Components/textAreaInput.dart';
 import 'package:placed/mvvm/Components/textInput.dart';
 import 'package:placed/mvvm/Models/student.model.dart';
+import 'package:placed/utils/fetchData/postData.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   const UpdateProfilePage({Key? key}) : super(key: key);
@@ -20,8 +23,16 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    profileData = AppConstant().student;
+    profileData = AppConstant.student;
     didChangeDependencies();
+
+    getData();
+  }
+
+   getData() async {
+    print("startign post ");
+    await postData("http://localhost:3000/api/students/getstudent",
+        {"email": "jigovind556"});
   }
 
   TextEditingController _nameController = TextEditingController();
@@ -89,7 +100,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     // You can add further logic to save the data to your backend or update state.
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

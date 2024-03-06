@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:placed/mvvm/views/HomeView/home.dart';
+import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
 
 import '../../mvvm/views/Auth/Login/LoginScreen.dart';
 
@@ -12,6 +13,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => Home());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());
+      case '/updateProfile':
+        return MaterialPageRoute(builder: (_) => UpdateProfilePage());
       case LoginScreen.routeName:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       default:
