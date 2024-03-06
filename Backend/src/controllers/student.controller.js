@@ -25,4 +25,19 @@ const registerStudent= asyncHandler(async (req,res)=>{
         )  
 })
 
-export {registerStudent}
+const getStudentData = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email || email.trim() === "") {
+        throw new ApiError(400, "Email parameter is required");
+    }
+
+    const student = await Student.findOne({ email });
+
+    if (!student) {
+        throw new ApiError(404, "Student not found");
+    }
+
+    res.status(200).json(new ApiResponse(200, { user: student }, "Student data retrieved successfully"));
+});
+export { registerStudent, getStudentData }
