@@ -3,7 +3,7 @@ import 'package:placed/chat/models/user.dart';
 import 'package:placed/chat/services/database.dart';
 import 'package:placed/chat/views/chat.dart';
 import 'package:placed/chat/widget/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
