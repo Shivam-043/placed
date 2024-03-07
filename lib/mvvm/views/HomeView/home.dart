@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   getData() async {
     print("starting post ");
-    await postData("http://192.168.1.20:3000/api/students/getstudent",
+    await postData("http://10.0.0.2:3000/api/students/getstudent",
         {"email": "jigovind556"});
   }
 
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   print("hello");
                   // getData();
-                  Navigator.pushNamed(context, '/event');
+                  Navigator.pushNamed(context, '/chat');
                 },
                 child: Text("update profile"))
           ],

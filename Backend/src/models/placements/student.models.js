@@ -45,7 +45,7 @@ const studentSchema = new Schema({
         type: Number,
     },
     skills: {
-        type: String,
+        type: [],
         trim: true,
     },
     mobileNumber: {

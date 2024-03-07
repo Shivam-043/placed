@@ -30,6 +30,7 @@ dependencies:
   fluttertoast: ^8.2.4
   flutter_svg: ^2.0.10+1
   http: ^1.2.0
+  cloud_firestore: ^4.15.7
 
 dev_dependencies:
   flutter_test:
