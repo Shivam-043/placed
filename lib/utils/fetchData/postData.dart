@@ -1,17 +1,19 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> postData(String apiUrl, Map<String, dynamic> data) async {
-  try {
-    final response = await http
-        .post(
-          Uri.parse(apiUrl),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data),
-        )
-        .catchError((e) => {print(e)});
+  // try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    print(response);
 
     print(response);
     if (response.statusCode < 300) {
@@ -24,9 +26,9 @@ Future<void> postData(String apiUrl, Map<String, dynamic> data) async {
 
       print(response.headers);
     }
-  } catch (error) {
-    print('Error during API request: $error');
-  }
+  // } catch (error) {
+  //   print('Error during API request: $error');
+  // }
 }
 
 void main() {
