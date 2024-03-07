@@ -31,7 +31,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
    getData() async {
     print("startign post ");
-    await postData("http://localhost:3000/api/students/getstudent",
+    await postData("http://172.16.168.32:4000/api/students/getstudent",
         {"email": "jigovind556"});
   }
 

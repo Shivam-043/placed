@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:placed/constants/strings.dart';
 import 'package:placed/mvvm/Models/student.model.dart';
+import 'package:placed/mvvm/views/Auth/Login/LoginScreen.dart';
 import 'package:placed/mvvm/views/HomeView/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,31 +16,38 @@ import '../../../constants/constants.dart';
 import '../../../utils/widgets/snackbar/snackbar.dart';
 
 class UserAuth extends ChangeNotifier {
+
+  UserAuth() {
+    readFromSharedPreferences();
+  }
+
   User? _user = FirebaseAuth.instance.currentUser;
 
   User? get user => _user;
 
   Future<void> googleSignInMethod(BuildContext context) async {
     try {
-
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final GoogleSignIn _googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if(googleUser!.email.endsWith('@nitkkr.ac.in')){
+      if (googleUser!.email.endsWith('@nitkkr.ac.in')) {
         final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+            await googleUser?.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
         await signInWithGoogle(context, credential);
-      }else{
+      } else {
         _auth.signOut();
         _googleSignIn.signOut();
-        showSnackBar(context: context, message: "Please use your college email id");
+        showSnackBar(
+            context: context, message: "Please use your college email id");
       }
     } catch (e) {
-      showSnackBar(context: context, message: "Unable to continue with google in method");
+      showSnackBar(
+          context: context,
+          message: "Unable to continue with google in method");
       log(e.toString());
     }
   }
@@ -59,6 +67,7 @@ class UserAuth extends ChangeNotifier {
             photo: value.user!.photoURL ?? '',
           );
           AppConstant.student = student;
+          AppConstant.isLogin = true;
           await saveToSharedPreferences(student).then((value) =>
               Navigator.pushNamedAndRemoveUntil(
                   context, Home.routeName, (route) => false));
@@ -80,17 +89,33 @@ class UserAuth extends ChangeNotifier {
     prefs.setString(AppStrings.prefUser, jsonEncode(student.toMap()));
   }
 
-  Future<void> readFromSharedPreferences(BuildContext context) async {
+  Future<void> readFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    AppConstant.isLogin = prefs.getBool(AppStrings.prefLogin) ?? false;
     if (prefs.getBool(AppStrings.prefLogin) == true) {
       String? user = prefs.getString(AppStrings.prefUser);
       if (user != null) {
         AppConstant.student = Student.fromJson(jsonDecode(user));
-        Navigator.pushNamedAndRemoveUntil(
-            context, Home.routeName, (route) => false);
       } else {
         AppConstant.student = Student();
       }
+    }
+  }
+
+  //signOut
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut().then((value) async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool(AppStrings.prefLogin, false);
+        prefs.remove(AppStrings.prefUser);
+        GoogleSignIn().signOut().then((value) =>
+            Navigator.pushNamedAndRemoveUntil(
+                context, LoginScreen.routeName, (route) => false));
+      });
+    } catch (e) {
+      showSnackBar(context: context, message: e.toString());
+      log(e.toString());
     }
   }
 }

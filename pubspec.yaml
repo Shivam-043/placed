@@ -29,7 +29,9 @@ dependencies:
   responsive_sizer: ^3.3.0+1
   fluttertoast: ^8.2.4
   flutter_svg: ^2.0.10+1
+  font_awesome_flutter: ^10.7.0
   http: ^1.2.0
+  flutter_staggered_grid_view: ^0.7.0
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +53,16 @@ flutter:
   fonts:
     - family: Stroke
       fonts:
-        - asset: assets/font/stroke.otf
+        - asset: assets/font/strokeWeight 20.otf
+        - asset: assets/font/strokeWeight 40.otf
+        - asset: assets/font/strokeWeight 60.otf
+        - asset: assets/font/strokeWeight 80.otf
+        - asset: assets/font/strokeWeight 100.otf
+        - asset: assets/font/strokeWeight 120.otf
+        - asset: assets/font/strokeWeight 140.otf
+        - asset: assets/font/strokeWeight 160.otf
+        - asset: assets/font/strokeWeight 180.otf
+
 
   assets:
     - assets/
