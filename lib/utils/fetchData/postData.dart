@@ -15,13 +15,16 @@ Future<void> postData(String apiUrl, Map<String, dynamic> data) async {
 
     print(response);
 
-    if (response.statusCode == 201) {
+    print(response);
+    if (response.statusCode < 300) {
       print('Data posted successfully');
       // You can handle the response data here if needed
       print('Response Data: ${response.body}');
     } else {
       print('Failed to post data. Status Code: ${response.statusCode}');
       print('Error Message: ${response.body}');
+
+      print(response.headers);
     }
   // } catch (error) {
   //   print('Error during API request: $error');
@@ -35,8 +38,7 @@ void main() {
     'name': 'John Doe',
     'email': 'john.doe@example.com',
     'mobile': '1234567890',
-    'photo':
-        'base64EncodedImage', 
+    'photo': 'base64EncodedImage',
   };
 
   postData(apiUrl, requestData);
