@@ -4,21 +4,25 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const registerStudent= asyncHandler(async (req,res)=>{
-    const { name, email, mobile,photo } = req.body;
+    const { name, email, mobileNumber,photo } = req.body;
     if (
-        [name, email, mobile,photo].some((field) => (!field || field?.trim() === ""))
+        [name, email].some((field) => (!field || field?.trim() === ""))
     ) {
         console.log("\nrequired field not received !!!!");
         throw new ApiError(400, "All fields are required");
     }
 
     const existedUser = await Student.findOne({ email });
-
+    console.log("existted user : ",existedUser);
     if (existedUser) {
-        throw new ApiError(409, "Email already in use");
+        // throw new ApiError(409, "Email already in use");
+        return res.status(201
+        ).json(
+        new ApiResponse(200, { user: existedUser }, "User already exist")
+        )
     }
 
-    const student = await Student.create({email,name,mobile,photo});
+    const student = await Student.create({ email, name, mobileNumber,photo});
     res.status(201
         ).json(
             new ApiResponse(200,{user:student},"User created successfully")
@@ -44,8 +48,9 @@ const updateStudent = asyncHandler(async (req, res) => {
     const { email } = req.body;
     // const { name, mobile, photo } = req.body;
 
-    if (!email || email.trim() === "") {
-        throw new ApiError(400, "Email parameter is required");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.trim())) {
+        throw new ApiError(400, "Invalid or missing email address");
     }
 
     const existingStudent = await Student.findOne({ email });

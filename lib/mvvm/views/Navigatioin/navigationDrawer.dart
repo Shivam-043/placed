@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:placed/mvvm/viewModels/Auth/userAuth.dart';
+import 'package:placed/utils/fetchData/postData.dart';
 
 class NavigationPanel extends StatelessWidget {
   final VoidCallback onPageVisited;
@@ -57,7 +59,7 @@ class NavigationPanel extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      onPageVisited(); 
+                      onPageVisited();
                       Navigator.pushNamed(context, '/chat');
                     },
                     title: Text(
@@ -67,7 +69,7 @@ class NavigationPanel extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      onPageVisited(); 
+                      onPageVisited();
                       // Navigator.pushNamed(context, '/backupPage');
                     },
                     title: Text(
@@ -77,7 +79,7 @@ class NavigationPanel extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      onPageVisited(); 
+                      onPageVisited();
                       // Navigator.pushNamed(context, '/backupPage');
                     },
                     title: Text(
@@ -87,8 +89,14 @@ class NavigationPanel extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      onPageVisited(); 
+                      onPageVisited();
                       // Navigator.pushNamed(context, '/backupPage');
+                      print("checking post ");
+                      Map<dynamic,dynamic>resp=await postData(
+                          "/api/students/getstudent",
+                          {"email": "jigovind556@gmail.com"});
+
+                          print("response is :  ${resp['user']}");
                     },
                     title: Text(
                       "Help",
@@ -97,7 +105,7 @@ class NavigationPanel extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      onPageVisited(); 
+                      onPageVisited();
                       // Navigator.pushNamed(context, '/backupPage');
                     },
                     title: Text(
@@ -110,10 +118,11 @@ class NavigationPanel extends StatelessWidget {
             ),
             ListTile(
               onTap: () async {
-                onPageVisited(); // Notify the HomePage that the user visited another page
+                // onPageVisited(); // Notify the HomePage that the user visited another page
                 // SharedPref sharedPref = SharedPref();
                 // await sharedPref.remove("user");
                 // Navigator.pushReplacementNamed(context, '/login');
+                await UserAuth().signOut(context);
               },
               title: Text(
                 "Log Out",

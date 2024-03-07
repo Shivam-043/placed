@@ -3,29 +3,35 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> postData(String apiUrl, Map<String, dynamic> data) async {
+Future postData(String apiUrl, Map<dynamic, dynamic>? data) async {
   // try {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(data),
-    );
+  data ??= {};
+  // print(data);
+  const serverUrl = "http://10.0.2.2:3000";
+  final response = await http.post(
+    Uri.parse(serverUrl + apiUrl),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(data),
+  );
 
-    print(response);
+  // print(response);
+  if (response.statusCode < 300) {
+    // Use jsonDecode to convert the response body to a Dart Map
+    Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    print(response);
-    if (response.statusCode < 300) {
-      print('Data posted successfully');
-      // You can handle the response data here if needed
-      print('Response Data: ${response.body}');
-    } else {
-      print('Failed to post data. Status Code: ${response.statusCode}');
-      print('Error Message: ${response.body}');
+    // Access the 'data' field from the response
+    dynamic responseDataField = responseData['data'];
+    // print('Data Field: $responseDataField');
 
-      print(response.headers);
-    }
+    return responseDataField;
+  } else {
+    print('Failed to post data. Status Code: ${response.statusCode}');
+    print('Error Message: ${response.body}');
+
+    print(response.headers);
+  }
   // } catch (error) {
   //   print('Error during API request: $error');
   // }

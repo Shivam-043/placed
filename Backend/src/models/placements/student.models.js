@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
 const studentSchema = new Schema({
-    userId: {
-        type: String,
-        unique: true,
-        index: true
-    },
+    // userId: {
+    //     type: String,
+    //     unique: true,
+    //     index: true
+    // },
     name: {
         type: String,
         required: true,

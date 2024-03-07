@@ -47,45 +47,45 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 20.verticalSpace,
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            height: 3,
-                            width: 9.w,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(100),
-                              ),
-                            )),
-                        5.verticalSpace,
-                        Container(
-                            height: 3,
-                            width: 7.w,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(100),
-                              ),
-                            )),
-                        5.verticalSpace,
-                        Container(
-                            height: 3,
-                            width: 5.w,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(100),
-                              ),
-                            )),
-                      ],
-                    )),
-                10.verticalSpace,
+                // Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Container(
+                //             height: 3,
+                //             width: 9.w,
+                //             decoration: BoxDecoration(
+                //               color: Colors.black,
+                //               borderRadius: BorderRadius.all(
+                //                 Radius.circular(100),
+                //               ),
+                //             )),
+                //         5.verticalSpace,
+                //         Container(
+                //             height: 3,
+                //             width: 7.w,
+                //             decoration: BoxDecoration(
+                //               color: Colors.black,
+                //               borderRadius: BorderRadius.all(
+                //                 Radius.circular(100),
+                //               ),
+                //             )),
+                //         5.verticalSpace,
+                //         Container(
+                //             height: 3,
+                //             width: 5.w,
+                //             decoration: BoxDecoration(
+                //               color: Colors.black,
+                //               borderRadius: BorderRadius.all(
+                //                 Radius.circular(100),
+                //               ),
+                //             )),
+                //       ],
+                //     )),
+                // 10.verticalSpace,
                 Container(
-                  height: 12.h,
+                  height: 10.h,
                   child: ListView.builder(
                       itemCount: 10,
                       scrollDirection: Axis.horizontal,
@@ -174,7 +174,7 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "New York - 1:22 PM",
+                            "Delhi - 1:22 PM",
                             style: TextStyle(
                               fontFamily: "Stroke",
                               fontWeight: FontWeight.w500,
@@ -184,7 +184,7 @@ class _HomeState extends State<Home> {
                           ),
                           10.horizontalSpace,
                           Text(
-                            "Moscow - 1:22 PM",
+                            "Banglore - 1:22 PM",
                             style: TextStyle(
                               fontFamily: "Stroke",
                               fontWeight: FontWeight.w500,
@@ -268,7 +268,7 @@ class _HomeState extends State<Home> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Icon(
-                                    FontAwesomeIcons.cakeCandles,
+                                    Icons.cake,
                                     size: 40,
                                   ),
                                   Container(
@@ -297,7 +297,7 @@ class _HomeState extends State<Home> {
                                         fontSize: 30),
                                   ),
                                   Text(
-                                    "Tommy's Birthday",
+                                    "Microsoft Internship test",
                                     style: TextStyle(
                                         fontFamily: "Stroke",
                                         fontWeight: FontWeight.w400,

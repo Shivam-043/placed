@@ -19,6 +19,8 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   // Editable form fields
   Student? profileData;
+
+  bool isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -29,11 +31,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     getData();
   }
 
-   getData() async {
-    print("startign post ");
-    await postData("http://172.16.168.32:4000/api/students/getstudent",
-        {"email": "jigovind556"});
-  }
+  getData() async {}
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _branchController = TextEditingController();
@@ -68,36 +66,58 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   }
 
   // Function to handle updating profile
-  void _updateProfile() {
-    // Implement your logic to update the profile using the entered data
-    String updatedName = _nameController.text;
-    String updatedBranch = _branchController.text;
-    String updatedPassingYear = _passingYearController.text;
-    String updatedRollNumber = _rollNumberController.text;
-    String updatedSection = _sectionController.text;
-    String updatedSubsection = _subsectionController.text;
-    String updatedResume = _resumeController.text;
-    String updatedCurrentCgpa = _currentCgpaController.text;
-    String updatedSkills = _skillsController.text;
-    String updatedEmail = _emailController.text;
-    String updatedMobileNumber = _mobileNumberController.text;
-    String updatedAddress = _addressController.text;
+  Future<void> _updateProfile() async {
+    setState(() {
+      isLoading = true;
+    });
 
-    // Print or use the updated data as per your requirements
-    print('Updated Name: $updatedName');
-    print('Updated Branch: $updatedBranch');
-    print('Updated Passing Year: $updatedPassingYear');
-    print('Updated Roll Number: $updatedRollNumber');
-    print('Updated Section: $updatedSection');
-    print('Updated Subsection: $updatedSubsection');
-    print('Updated Resume: $updatedResume');
-    print('Updated Current CGPA: $updatedCurrentCgpa');
-    print('Updated Skills: $updatedSkills');
-    print('Updated Email: $updatedEmail');
-    print('Updated Mobile Number: $updatedMobileNumber');
-    print('Updated Address: $updatedAddress');
+    try {
+      // Gather updated data from controllers
+      String updatedName = _nameController.text;
+      String updatedBranch = _branchController.text;
+      int updatedPassingYear = int.parse(_passingYearController.text);
+      String updatedRollNumber = _rollNumberController.text;
+      String updatedSection = _sectionController.text;
+      String updatedSubsection = _subsectionController.text;
+      String updatedEmail = _emailController.text;
+      String updatedMobileNumber = _mobileNumberController.text;
+      String updatedAddress = _addressController.text;
 
-    // You can add further logic to save the data to your backend or update state.
+      // Create a Student object with the updated data
+      Student updatedStudent = Student(
+        name: updatedName,
+        branch: updatedBranch,
+        passingYear: updatedPassingYear,
+        rollNumber: updatedRollNumber,
+        section: updatedSection,
+        subsection: updatedSubsection,
+        email: updatedEmail,
+        mobileNumber: updatedMobileNumber,
+        address: updatedAddress,
+      );
+
+      // Call the postData function to send the updated data to the backend
+      Map<dynamic, dynamic> resp =
+          await postData("/api/students/update", updatedStudent.toMap());
+
+      // Update the local AppConstant.student with the new data from the response
+      AppConstant.student = Student.fromJson(resp['user']);
+
+      // You can add further logic here based on the response if needed
+      Navigator.of(context).pop();
+      // Set isLoading to false after the update is complete
+      setState(() {
+        isLoading = false;
+      });
+    } catch (error) {
+      print('Error during profile update: $error');
+
+      // Handle error scenarios if needed
+      // Set isLoading to false in case of an error
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
