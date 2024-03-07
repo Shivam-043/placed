@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:placed/constants/constants.dart';
 import 'package:placed/mvvm/Components/customProfileField.dart';
+import 'package:placed/mvvm/Components/customProfileselect.dart';
 import 'package:placed/mvvm/Components/imageInput.dart';
 import 'package:placed/mvvm/Components/textAreaInput.dart';
 import 'package:placed/mvvm/Components/textInput.dart';
+import 'package:placed/mvvm/Models/branch.model.dart';
 import 'package:placed/mvvm/Models/student.model.dart';
 import 'package:placed/utils/fetchData/postData.dart';
 
@@ -19,7 +21,9 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   // Editable form fields
   Student? profileData;
-
+  List<Branch> branches = []; // List to store all branch data
+  List<String> sectionOptions = [];
+  List<String> subsectionOptions = [];
   bool isLoading = false;
   @override
   void initState() {
@@ -31,7 +35,66 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     getData();
   }
 
-  getData() async {}
+  Future<void> getData() async {
+    try {
+      // Make an HTTP POST request to fetch all branches
+      final response = await postData("/api/branch/readall", {});
+
+      // Check if the request was successful (status code 200)
+
+      // Parse the response body to a list of branches
+      List<dynamic> branchData = response['branches'];
+
+      // Create Branch objects from the data and update the branches list
+      setState(() {
+        branches = branchData.map((data) => Branch.fromJson(data)).toList();
+      });
+      // Update the section and subsection options based on the fetched branches
+      updateSectionAndSubsectionOptions();
+
+      // Set the initial branch value in the controller if not already set
+      if (_branchController.text.isEmpty && branches.isNotEmpty) {
+        _branchController.text = branches[0].name;
+      }
+    } catch (error) {
+      // Handle error scenarios if needed
+      print("Error during branch data fetching: $error");
+    }
+  }
+
+  // Update the section and subsection options based on the selected branch
+  void updateSectionAndSubsectionOptions() {
+    if (_branchController.text.isNotEmpty) {
+      // Find the selected branch
+      Branch selectedBranch = branches
+          .firstWhere((branch) => branch.name == _branchController.text);
+
+      // Update section options
+      setState(() {
+        sectionOptions = selectedBranch.sections;
+      });
+
+      // Update subsection options
+      if (selectedBranch.subSections.isNotEmpty) {
+        setState(() {
+          subsectionOptions = selectedBranch.subSections;
+        });
+      }
+    }
+  }
+
+  void _updateBranch(String newBranch) {
+
+    
+        print("changing optioons");
+      // If the selected branch changes, update the controller value
+      setState(() {
+        _branchController.text = newBranch;
+      });
+
+      updateSectionAndSubsectionOptions();
+    
+  }
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _branchController = TextEditingController();
@@ -139,13 +202,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Name',
               ),
               SizedBox(height: 20),
-              ProfileField(
-                icon: Icons.business,
-                title: 'Branch',
-                controller: _branchController,
-                hintText: 'Branch',
-              ),
-              SizedBox(height: 20),
+              // ProfileField(
+              //   icon: Icons.business,
+              //   title: 'Branch',
+              //   controller: _branchController,
+              //   hintText: 'Branch',
+              // ),
+              // SizedBox(height: 20),
               ProfileField(
                 icon: Icons.calendar_today,
                 title: 'Passing Year',
@@ -160,20 +223,28 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Roll Number',
               ),
               SizedBox(height: 20),
-              ProfileField(
+              ProfileSelectField(
+                icon: Icons.business,
+                title: 'Branch',
+                controller: _branchController,
+                options: branches.map((branch) => branch.name).toList(),
+                onChanged:
+                    _updateBranch, // Call _updateBranch when branch changes
+              ),
+              SizedBox(height: 20),
+              ProfileSelectField(
                 icon: Icons.view_list,
                 title: 'Section',
                 controller: _sectionController,
-                hintText: 'Section',
+                options: sectionOptions,
               ),
               SizedBox(height: 20),
-              ProfileField(
+              ProfileSelectField(
                 icon: Icons.view_module,
                 title: 'Subsection',
                 controller: _subsectionController,
-                hintText: 'Subsection',
+                options: subsectionOptions,
               ),
-              SizedBox(height: 20),
               ProfileField(
                 icon: Icons.email,
                 title: 'Email',

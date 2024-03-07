@@ -17,7 +17,10 @@ app.use(cookieParser())
 
 // import routes
 import studentRouter from  './routes/student.routes.js';
+import branchRouter from './routes/branch.routes.js';
+
 
 app.use('/api/students', studentRouter);
+app.use('/api/branch', branchRouter);
 
 export default app

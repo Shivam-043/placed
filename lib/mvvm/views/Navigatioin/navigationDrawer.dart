@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:placed/constants/constants.dart';
 import 'package:placed/mvvm/viewModels/Auth/userAuth.dart';
 import 'package:placed/utils/fetchData/postData.dart';
 
@@ -11,22 +12,44 @@ class NavigationPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        // width: MediaQuery.of(context).size.width * 0.65, // 65% of screen width
-        color: Theme.of(context)
-            .primaryColor, // Use primary theme color for background
+        color: Theme.of(context).primaryColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              // padding: EdgeInsets.symmetric(vertical: 1, horizontal: 16), // Adjust the padding here
-              child: Text(
-                "PlaceIt",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "PlaceIt",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  // Display user's photo and name from AppConstant.student
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        // Assuming AppConstant.student has a field 'photoUrl'
+                        backgroundImage:
+                            NetworkImage(AppConstant.student.photo ?? ''),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        AppConstant.student?.name ?? '',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Divider(
