@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:placed/chat/main.dart';
 import 'package:placed/mvvm/views/CalendarView/event.dart';
 import 'package:placed/mvvm/views/HomeView/home.dart';
 import 'package:placed/mvvm/views/ProfileUpdate/updateProfile.dart';
@@ -16,6 +17,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => Home());
       case '/updateProfile':
         return MaterialPageRoute(builder: (_) => UpdateProfilePage());
+      case '/chat':
+        return MaterialPageRoute(builder: (_) => ChatApp());
       case LoginScreen.routeName:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case '/event':

@@ -14,7 +14,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -23,23 +22,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    if(AppConstant.isLogin){
-      Navigator.pushNamedAndRemoveUntil(context, Home.routeName , (route) => false);
+    if (AppConstant.isLogin) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, Home.routeName, (route) => false);
     }
     print(AppConstant.isLogin);
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
       padding: EdgeInsets.all(16.0),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         SizedBox(height: 20),
         Image.asset(AppImage.loginImage),
         SizedBox(height: 20),
         Text(
           'PlaceIt',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold , fontFamily: 'Stroke'),
+          style: TextStyle(
+              fontSize: 70, fontWeight: FontWeight.bold, fontFamily: 'Stroke'),
         ),
         SizedBox(height: 20),
         Text(
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 20),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             UserAuth().googleSignInMethod(context);
           },
           child: Container(
@@ -70,9 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 60,
             child: ClipOval(
               child: Image.asset(
-              AppImage.google,
+                AppImage.google,
                 fit: BoxFit.contain,
-                        ),
+              ),
             ),
           ),
         ),

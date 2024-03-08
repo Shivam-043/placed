@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:placed/constants/constants.dart';
+import 'package:placed/mvvm/Components/customImageSelect.dart';
 import 'package:placed/mvvm/Components/customProfileField.dart';
+import 'package:placed/mvvm/Components/customProfileselect.dart';
+import 'package:placed/mvvm/Components/customResumeSelect.dart';
 import 'package:placed/mvvm/Components/imageInput.dart';
 import 'package:placed/mvvm/Components/textAreaInput.dart';
 import 'package:placed/mvvm/Components/textInput.dart';
+import 'package:placed/mvvm/Models/branch.model.dart';
 import 'package:placed/mvvm/Models/student.model.dart';
 import 'package:placed/utils/fetchData/postData.dart';
 
@@ -19,6 +23,10 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   // Editable form fields
   Student? profileData;
+  List<Branch> branches = []; // List to store all branch data
+  List<String> sectionOptions = [];
+  List<String> subsectionOptions = [];
+  bool isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -29,10 +37,54 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     getData();
   }
 
-   getData() async {
-    print("startign post ");
-    await postData("http://172.16.168.32:4000/api/students/getstudent",
-        {"email": "jigovind556"});
+  Future<void> getData() async {
+    try {
+      final response = await postData("/api/branch/readall", {});
+
+      List<dynamic> branchData = response['branches'];
+
+      setState(() {
+        branches = branchData.map((data) => Branch.fromJson(data)).toList();
+      });
+      updateSectionAndSubsectionOptions();
+
+      if (_branchController.text.isEmpty && branches.isNotEmpty) {
+        _branchController.text = branches[0].name;
+      }
+    } catch (error) {
+      print("Error during branch data fetching: $error");
+    }
+  }
+
+  // Update the section and subsection options based on the selected branch
+  void updateSectionAndSubsectionOptions() {
+    if (_branchController.text.isNotEmpty) {
+      // Find the selected branch
+      Branch selectedBranch = branches
+          .firstWhere((branch) => branch.name == _branchController.text);
+
+      // Update section options
+      setState(() {
+        sectionOptions = selectedBranch.sections;
+      });
+
+      // Update subsection options
+      if (selectedBranch.subSections.isNotEmpty) {
+        setState(() {
+          subsectionOptions = selectedBranch.subSections;
+        });
+      }
+    }
+  }
+
+  void _updateBranch(String newBranch) {
+    print("changing optioons");
+    // If the selected branch changes, update the controller value
+    setState(() {
+      _branchController.text = newBranch;
+    });
+
+    updateSectionAndSubsectionOptions();
   }
 
   TextEditingController _nameController = TextEditingController();
@@ -47,7 +99,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _mobileNumberController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
-
+  TextEditingController _profilePhotoController = TextEditingController();
   // Non-editable fields
   String _userId = "12345"; // Replace with user-specific data
   String _onCampusStatus = "Unplaced"; // Replace with user-specific data
@@ -65,39 +117,63 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     _emailController.text = profileData?.email ?? '';
     _mobileNumberController.text = profileData?.mobileNumber ?? '';
     _addressController.text = profileData?.address ?? '';
+    _profilePhotoController.text = profileData?.photo ?? '';
+    _resumeController.text = profileData?.resume ?? '';
   }
 
   // Function to handle updating profile
-  void _updateProfile() {
-    // Implement your logic to update the profile using the entered data
-    String updatedName = _nameController.text;
-    String updatedBranch = _branchController.text;
-    String updatedPassingYear = _passingYearController.text;
-    String updatedRollNumber = _rollNumberController.text;
-    String updatedSection = _sectionController.text;
-    String updatedSubsection = _subsectionController.text;
-    String updatedResume = _resumeController.text;
-    String updatedCurrentCgpa = _currentCgpaController.text;
-    String updatedSkills = _skillsController.text;
-    String updatedEmail = _emailController.text;
-    String updatedMobileNumber = _mobileNumberController.text;
-    String updatedAddress = _addressController.text;
+  Future<void> _updateProfile() async {
+    setState(() {
+      isLoading = true;
+    });
 
-    // Print or use the updated data as per your requirements
-    print('Updated Name: $updatedName');
-    print('Updated Branch: $updatedBranch');
-    print('Updated Passing Year: $updatedPassingYear');
-    print('Updated Roll Number: $updatedRollNumber');
-    print('Updated Section: $updatedSection');
-    print('Updated Subsection: $updatedSubsection');
-    print('Updated Resume: $updatedResume');
-    print('Updated Current CGPA: $updatedCurrentCgpa');
-    print('Updated Skills: $updatedSkills');
-    print('Updated Email: $updatedEmail');
-    print('Updated Mobile Number: $updatedMobileNumber');
-    print('Updated Address: $updatedAddress');
+    try {
+      // Gather updated data from controllers
+      String updatedName = _nameController.text;
+      String updatedBranch = _branchController.text;
+      int updatedPassingYear = int.parse(_passingYearController.text);
+      String updatedRollNumber = _rollNumberController.text;
+      String updatedSection = _sectionController.text;
+      String updatedSubsection = _subsectionController.text;
+      String updatedEmail = _emailController.text;
+      String updatedMobileNumber = _mobileNumberController.text;
+      String updatedAddress = _addressController.text;
 
-    // You can add further logic to save the data to your backend or update state.
+      // Create a Student object with the updated data
+      Student updatedStudent = Student(
+        name: updatedName,
+        branch: updatedBranch,
+        passingYear: updatedPassingYear,
+        rollNumber: updatedRollNumber,
+        section: updatedSection,
+        subsection: updatedSubsection,
+        email: updatedEmail,
+        mobileNumber: updatedMobileNumber,
+        address: updatedAddress,
+      );
+
+      // Call the postData function to send the updated data to the backend
+      Map<dynamic, dynamic> resp =
+          await postData("/api/students/update", updatedStudent.toMap());
+
+      // Update the local AppConstant.student with the new data from the response
+      AppConstant.student = Student.fromJson(resp['user']);
+
+      // You can add further logic here based on the response if needed
+      Navigator.of(context).pop();
+      // Set isLoading to false after the update is complete
+      setState(() {
+        isLoading = false;
+      });
+    } catch (error) {
+      print('Error during profile update: $error');
+
+      // Handle error scenarios if needed
+      // Set isLoading to false in case of an error
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -119,13 +195,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Name',
               ),
               SizedBox(height: 20),
-              ProfileField(
-                icon: Icons.business,
-                title: 'Branch',
-                controller: _branchController,
-                hintText: 'Branch',
-              ),
-              SizedBox(height: 20),
+              // ProfileField(
+              //   icon: Icons.business,
+              //   title: 'Branch',
+              //   controller: _branchController,
+              //   hintText: 'Branch',
+              // ),
+              // SizedBox(height: 20),
               ProfileField(
                 icon: Icons.calendar_today,
                 title: 'Passing Year',
@@ -140,20 +216,28 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Roll Number',
               ),
               SizedBox(height: 20),
-              ProfileField(
+              ProfileSelectField(
+                icon: Icons.business,
+                title: 'Branch',
+                controller: _branchController,
+                options: branches.map((branch) => branch.name).toList(),
+                onChanged:
+                    _updateBranch, // Call _updateBranch when branch changes
+              ),
+              SizedBox(height: 20),
+              ProfileSelectField(
                 icon: Icons.view_list,
                 title: 'Section',
                 controller: _sectionController,
-                hintText: 'Section',
+                options: sectionOptions,
               ),
               SizedBox(height: 20),
-              ProfileField(
+              ProfileSelectField(
                 icon: Icons.view_module,
                 title: 'Subsection',
                 controller: _subsectionController,
-                hintText: 'Subsection',
+                options: subsectionOptions,
               ),
-              SizedBox(height: 20),
               ProfileField(
                 icon: Icons.email,
                 title: 'Email',
@@ -173,7 +257,20 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Address',
               ),
               SizedBox(height: 20),
-              CustomImageInput(),
+              ImageSelectField(
+                icon: Icons.photo,
+                title: 'Profile Photo',
+                controller: _profilePhotoController,
+                email:profileData?.email ?? 'temp',
+              ),
+              SizedBox(height: 20),
+              ResumeSelectField(
+                // New ResumeSelectField
+                icon: Icons.file_copy,
+                title: 'Resume',
+                controller: _resumeController,
+                email: profileData?.email ?? 'temp',
+              ),
               SizedBox(height: 20),
               Text('User ID: $_userId'),
               SizedBox(height: 20),

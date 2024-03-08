@@ -9,6 +9,7 @@ import 'package:placed/constants/strings.dart';
 import 'package:placed/mvvm/Models/student.model.dart';
 import 'package:placed/mvvm/views/Auth/Login/LoginScreen.dart';
 import 'package:placed/mvvm/views/HomeView/home.dart';
+import 'package:placed/utils/fetchData/postData.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +17,6 @@ import '../../../constants/constants.dart';
 import '../../../utils/widgets/snackbar/snackbar.dart';
 
 class UserAuth extends ChangeNotifier {
-
   UserAuth() {
     readFromSharedPreferences();
   }
@@ -31,8 +31,8 @@ class UserAuth extends ChangeNotifier {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser!.email.endsWith('@nitkkr.ac.in')) {
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
@@ -66,7 +66,10 @@ class UserAuth extends ChangeNotifier {
             mobileNumber: value.user!.phoneNumber ?? '',
             photo: value.user!.photoURL ?? '',
           );
-          AppConstant.student = student;
+
+          // AppConstant.student = student;
+          Map<dynamic,dynamic> resp = await postData("/api/students/register", student.toMap());
+          AppConstant.student = Student.fromJson(resp['user']);
           AppConstant.isLogin = true;
           await saveToSharedPreferences(student).then((value) =>
               Navigator.pushNamedAndRemoveUntil(
@@ -107,11 +110,13 @@ class UserAuth extends ChangeNotifier {
     try {
       await FirebaseAuth.instance.signOut().then((value) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool(AppStrings.prefLogin, false);
-        prefs.remove(AppStrings.prefUser);
+        await prefs.setBool(AppStrings.prefLogin, false);
+        await prefs.remove(AppStrings.prefUser);
+        AppConstant.isLogin = false;
         GoogleSignIn().signOut().then((value) =>
             Navigator.pushNamedAndRemoveUntil(
                 context, LoginScreen.routeName, (route) => false));
+        // context, "/chat", (route) => false));
       });
     } catch (e) {
       showSnackBar(context: context, message: e.toString());

@@ -7,7 +7,7 @@ const app = express()
 //use is used for majorly middleware and cofigs
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
-    credentials: true
+    // credentials: true
 }))
 
 app.use(express.json({ limit: "16kb" }))
@@ -17,7 +17,10 @@ app.use(cookieParser())
 
 // import routes
 import studentRouter from  './routes/student.routes.js';
+import branchRouter from './routes/branch.routes.js';
+
 
 app.use('/api/students', studentRouter);
+app.use('/api/branch', branchRouter);
 
 export default app
