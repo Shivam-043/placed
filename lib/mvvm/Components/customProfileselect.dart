@@ -5,7 +5,7 @@ class ProfileSelectField extends StatelessWidget {
   final String title;
   final TextEditingController controller;
   final List<String> options;
-  final ValueChanged<String>? onChanged; // Add this line
+  final ValueChanged<String>? onChanged;
 
   const ProfileSelectField({
     Key? key,
@@ -23,18 +23,25 @@ class ProfileSelectField extends StatelessWidget {
         leading: Icon(icon),
         title: Text(title),
         subtitle: DropdownButtonFormField<String>(
-          value: controller.text,
-          items: options.map((String option) {
-            return DropdownMenuItem<String>(
-              value: option,
-              child: Text(option),
-            );
-          }).toList(),
+          value: controller.text.isNotEmpty ? controller.text : 'null',
+          items: [
+             if (options.isNotEmpty)
+              DropdownMenuItem<String>(
+                value: 'null',
+                child: Text('Select $title'),
+              ),
+            ...options.map((String option) {
+              return DropdownMenuItem<String>(
+                value: option,
+                child: Text(option),
+              );
+            }).toList(),
+          ],
           onChanged: (String? value) {
             if (value != null) {
               controller.text = value;
               onChanged
-                  ?.call(value); // Call the onChanged callback if it exists
+                  ?.call(value); 
             }
           },
           decoration: InputDecoration.collapsed(hintText: 'Select $title'),

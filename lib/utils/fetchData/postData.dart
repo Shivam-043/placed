@@ -7,7 +7,8 @@ Future postData(String apiUrl, Map<dynamic, dynamic>? data) async {
   // try {
   data ??= {};
   // print(data);
-  const serverUrl = "http://10.0.2.2:3000";
+  const serverUrl = "http://192.168.0.102:3000";
+  // const serverUrl = "http://10.0.2.2:3000";
   final response = await http.post(
     Uri.parse(serverUrl + apiUrl),
     headers: {

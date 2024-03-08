@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:placed/constants/constants.dart';
+import 'package:placed/mvvm/Components/customImageSelect.dart';
 import 'package:placed/mvvm/Components/customProfileField.dart';
 import 'package:placed/mvvm/Components/customProfileselect.dart';
+import 'package:placed/mvvm/Components/customResumeSelect.dart';
 import 'package:placed/mvvm/Components/imageInput.dart';
 import 'package:placed/mvvm/Components/textAreaInput.dart';
 import 'package:placed/mvvm/Components/textInput.dart';
@@ -37,27 +39,19 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   Future<void> getData() async {
     try {
-      // Make an HTTP POST request to fetch all branches
       final response = await postData("/api/branch/readall", {});
 
-      // Check if the request was successful (status code 200)
-
-      // Parse the response body to a list of branches
       List<dynamic> branchData = response['branches'];
 
-      // Create Branch objects from the data and update the branches list
       setState(() {
         branches = branchData.map((data) => Branch.fromJson(data)).toList();
       });
-      // Update the section and subsection options based on the fetched branches
       updateSectionAndSubsectionOptions();
 
-      // Set the initial branch value in the controller if not already set
       if (_branchController.text.isEmpty && branches.isNotEmpty) {
         _branchController.text = branches[0].name;
       }
     } catch (error) {
-      // Handle error scenarios if needed
       print("Error during branch data fetching: $error");
     }
   }
@@ -84,16 +78,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   }
 
   void _updateBranch(String newBranch) {
+    print("changing optioons");
+    // If the selected branch changes, update the controller value
+    setState(() {
+      _branchController.text = newBranch;
+    });
 
-    
-        print("changing optioons");
-      // If the selected branch changes, update the controller value
-      setState(() {
-        _branchController.text = newBranch;
-      });
-
-      updateSectionAndSubsectionOptions();
-    
+    updateSectionAndSubsectionOptions();
   }
 
   TextEditingController _nameController = TextEditingController();
@@ -108,7 +99,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _mobileNumberController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
-
+  TextEditingController _profilePhotoController = TextEditingController();
   // Non-editable fields
   String _userId = "12345"; // Replace with user-specific data
   String _onCampusStatus = "Unplaced"; // Replace with user-specific data
@@ -126,6 +117,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     _emailController.text = profileData?.email ?? '';
     _mobileNumberController.text = profileData?.mobileNumber ?? '';
     _addressController.text = profileData?.address ?? '';
+    _profilePhotoController.text = profileData?.photo ?? '';
+    _resumeController.text = profileData?.resume ?? '';
   }
 
   // Function to handle updating profile
@@ -264,7 +257,20 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 hintText: 'Address',
               ),
               SizedBox(height: 20),
-              CustomImageInput(),
+              ImageSelectField(
+                icon: Icons.photo,
+                title: 'Profile Photo',
+                controller: _profilePhotoController,
+                email:profileData?.email ?? 'temp',
+              ),
+              SizedBox(height: 20),
+              ResumeSelectField(
+                // New ResumeSelectField
+                icon: Icons.file_copy,
+                title: 'Resume',
+                controller: _resumeController,
+                email: profileData?.email ?? 'temp',
+              ),
               SizedBox(height: 20),
               Text('User ID: $_userId'),
               SizedBox(height: 20),

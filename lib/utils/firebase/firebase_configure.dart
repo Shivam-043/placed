@@ -5,5 +5,6 @@ class FirebaseConfigure {
       apiKey: 'AIzaSyCcgXU_3c4q1kXUfQ9NO36ycpF4RgqxtJY',
       appId: "1:4053823757:android:3280b017c631f2987ac044",
       messagingSenderId: '4053823757',
+      storageBucket:'plazed.appspot.com',
       projectId: 'plazed');
 }
